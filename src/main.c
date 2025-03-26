@@ -4,28 +4,39 @@
 #include "../include/metrics.h"
 
 int main(int argc, char *argv[]) {
-    // Aqui usamos load_orders para leer el csv
     if (argc < 2) {
         printf("Uso: %s <ventas_pizzas.csv>\n", argv[0]);
         return 1;
     }
 
-    Order *orders;
-    int size = load_orders(argv[1], &orders);
-    if (size == 0) return 1;
-    // Definir las métricas disponibles
-    struct {
-        char *name;
-        MetricFunction func;
-    } metrics[] = {
-        {"pms", pizza_mas_vendida},
-        {"pls", pizza_menos_vendida},
-        {NULL, NULL}
-    };
+    // Contar los registros del archivo
+    iOrders = CuentaRegistros(argv[1]);
+    if (iOrders == 0) {
+        printf("No se encontraron órdenes en el archivo.\n");
+        return 1;
+    }
 
-    printf("Se cargaron %d ordenes.\n", size);
+    // Cargar las órdenes del archivo
+    CargaRegistros(argv[1], iOrders);
+    if (aOrders == NULL) {
+        printf("Error al cargar las órdenes.\n");
+        return 1;
+    }
 
-    free(orders);
+    printf("Se cargaron %d órdenes.\n", iOrders);
+
+    // Obtener la pizza más y menos vendida
+    char *mas_vendida = pizza_mas_vendida(iOrders, aOrders);
+    char *menos_vendida = pizza_menos_vendida(iOrders, aOrders);
+
+    // Mostrar los resultados
+    printf("Pizza más vendida: %s\n", mas_vendida);
+    printf("Pizza menos vendida: %s\n", menos_vendida);
+
+    // Liberar la memoria asignada
+    free_orders(aOrders, iOrders);  // Liberar las órdenes
+    free(mas_vendida);   // Liberar la memoria de la pizza más vendida
+    free(menos_vendida); // Liberar la memoria de la pizza menos vendida
     
-    return 0; 
+    return 0;
 }
