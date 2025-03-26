@@ -60,7 +60,9 @@ char* pizza_mas_vendida(int size, Order *orders) {
         }
     }
 
-    return pizzas[max_index].pizza_name_id;
+    char Pizza_Mas_Vendida[40];
+    Pizza_Mas_Vendida == pizzas[max_index].pizza_name_id;
+    return Pizza_Mas_Vendida;
     
     //Retorna el nombre de la pizza mas vendida
 }
@@ -112,7 +114,9 @@ char* pizza_menos_vendida(int size, Order *orders) {
         }
     }
 
-    return pizzas[min_index].pizza_name_id;
+    char Pizza_Menos_Vendida[40];
+    Pizza_Menos_Vendida == pizzas[min_index].pizza_name_id;
+    return Pizza_Menos_Vendida;
     
     // Retorna el nombre de la pizza menos vendida
 }
