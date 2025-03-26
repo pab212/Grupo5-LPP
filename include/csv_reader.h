@@ -1,6 +1,7 @@
-#ifndef CSV_READER_H
-#define CSV_READER_H
+#ifndef READER_CSV_H
+#define READER_CSV_H
 
+// Estructura Order (o como la tengas en tu código)
 typedef struct {
     int pizza_id;
     int order_id;
@@ -16,6 +17,15 @@ typedef struct {
     char pizza_name[100];
 } Order;
 
-int load_orders(const char *filename, Order **orders);
+// Variables globales
+extern Order *aOrders;
+extern int iOrders;
+extern char *sCabecera;
 
-#endif 
+// Declaración de funciones
+int CuentaRegistros(const char *filename);
+void CargaRegistros(const char *filename, int iOrders);
+void MuestraDatos(void);
+void free_orders(Order *orders, int size);
+
+#endif // READER_CSV_H

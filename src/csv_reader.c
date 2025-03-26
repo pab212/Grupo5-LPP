@@ -1,30 +1,139 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/csv_reader.h"
+#include <sys/stat.h>
+#include "csv_reader.h"
 
-#define MAX_ORDERS 20 // Ajusta según el tamaño esperado
+// Variables globales
+Order *aOrders = NULL;
+int iOrders = 0;
+char *sCabecera = NULL;
 
-int load_orders(const char *filename, Order **orders) {
+//
+// Rutina para contar cantidad de registros de un archivo de texto
+//
+int CuentaRegistros(const char *filename) {
+    int iOrders = 0;
     FILE *file = fopen(filename, "r");
-    if (!file) {
-        printf("Error abriendo el archivo %s\n", filename);
-        return 0;
+    struct stat stStatusFile;
+    stat(filename, &stStatusFile);
+    char *sRegistro = malloc(stStatusFile.st_size);
+    
+    while (fscanf(file, "%[^\n] ", sRegistro) != EOF) {
+        iOrders++;
     }
-
-    *orders = malloc(MAX_ORDERS * sizeof(Order));
-    int count = 0;
-    char line[512];
-
-    fgets(line, sizeof(line), file); // Saltar la primera línea (encabezados)
-    while (fgets(line, sizeof(line), file) && count < MAX_ORDERS) {
-        Order o;
-        sscanf(line, "%d,%d,%49[^,],%d,%19[^,],%9[^,],%f,%f,%4[^,],%19[^,],%199[^,],%99[^\n]",
-               &o.pizza_id, &o.order_id, o.pizza_name_id, &o.quantity, o.order_date, o.order_time,
-               &o.unit_price, &o.total_price, o.pizza_size, o.pizza_category, o.pizza_ingredients, o.pizza_name);
-        (*orders)[count++] = o;
-    }
-
     fclose(file);
-    return count; 
+    iOrders--;  // Restar 1 para no contar los encabezados
+    return iOrders;
+}
+
+//
+// Rutina para cargar el archivo en el puntero de estructura Order
+//
+void CargaRegistros(const char *filename, int iOrders) {
+    aOrders = (Order*)malloc(iOrders * sizeof(Order));
+    FILE* file = fopen(filename, "r");
+    struct stat stStatusFile;
+    stat(filename, &stStatusFile);
+    char *sRegistro = malloc(stStatusFile.st_size);
+    int iPosRegistro = 0;
+
+    // Salvamos el primer registro de cabecera
+    sCabecera = malloc(stStatusFile.st_size);
+    fscanf(file, "%[^\n] ", sCabecera);
+    
+    // Se recorre hasta EOF para cargar los registros
+    while (fscanf(file, "%[^\n] ", sRegistro) != EOF) {
+        char *token;
+
+        // pizza_id
+        token = strtok(sRegistro, ",");
+        aOrders[iPosRegistro].pizza_id = atoi(token);
+
+        // order_id
+        token = strtok(NULL, ",");
+        aOrders[iPosRegistro].order_id = atoi(token);
+
+        // pizza_name_id
+        token = strtok(NULL, ",");
+        strcpy(aOrders[iPosRegistro].pizza_name_id, token);
+
+        // quantity
+        token = strtok(NULL, ",");
+        aOrders[iPosRegistro].quantity = atoi(token);
+
+        // order_date
+        token = strtok(NULL, ",");
+        strcpy(aOrders[iPosRegistro].order_date, token);
+
+        // order_time
+        token = strtok(NULL, ",");
+        strcpy(aOrders[iPosRegistro].order_time, token);
+
+        // unit_price
+        token = strtok(NULL, ",");
+        aOrders[iPosRegistro].unit_price = atof(token);
+
+        // total_price
+        token = strtok(NULL, ",");
+        aOrders[iPosRegistro].total_price = atof(token);
+
+        // pizza_size
+        token = strtok(NULL, ",");
+        strcpy(aOrders[iPosRegistro].pizza_size, token);
+
+        // pizza_category
+        token = strtok(NULL, ",");
+        strcpy(aOrders[iPosRegistro].pizza_category, token);
+
+        // pizza_ingredients
+        token = strtok(NULL, ",");
+        strcpy(aOrders[iPosRegistro].pizza_ingredients, token);
+
+        // pizza_name
+        token = strtok(NULL, "\"");
+        strcpy(aOrders[iPosRegistro].pizza_name, token);
+        
+        iPosRegistro++;
+    }
+    fclose(file);
+}
+
+//
+// Muestra los datos cargados
+//
+void MuestraDatos() {
+    printf("Reg. 0: cabecera: %s\n", sCabecera);
+    for (int iPosRegistro = 0; iPosRegistro < iOrders; iPosRegistro++) {
+        printf("Reg. %i: %d | %d | %s | %d | %s | %s | %.2f | %.2f | %s | %s | %s | %s\n", 
+            iPosRegistro + 1,
+            aOrders[iPosRegistro].pizza_id, 
+            aOrders[iPosRegistro].order_id, 
+            aOrders[iPosRegistro].pizza_name_id, 
+            aOrders[iPosRegistro].quantity,    
+            aOrders[iPosRegistro].order_date,
+            aOrders[iPosRegistro].order_time,
+            aOrders[iPosRegistro].unit_price, 
+            aOrders[iPosRegistro].total_price,
+            aOrders[iPosRegistro].pizza_size,
+            aOrders[iPosRegistro].pizza_category,
+            aOrders[iPosRegistro].pizza_ingredients,
+            aOrders[iPosRegistro].pizza_name);
+    }
+}
+// Función para liberar memoria de las órdenes
+void free_orders(Order *orders, int size) {
+    // Liberar las cadenas dentro de cada order
+    for (int i = 0; i < size; i++) {
+        free(orders[i].pizza_name_id);
+        free(orders[i].order_date);
+        free(orders[i].order_time);
+        free(orders[i].pizza_size);
+        free(orders[i].pizza_category);
+        free(orders[i].pizza_ingredients);
+        free(orders[i].pizza_name);
+    }
+
+    // Finalmente liberar el arreglo de órdenes
+    free(orders);
 }
