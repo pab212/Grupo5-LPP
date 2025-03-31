@@ -13,18 +13,18 @@ int main(int argc, char *argv[]) {
     // Contar los registros del archivo
     iOrders = CuentaRegistros(argv[1]);
     if (iOrders == 0) {
-        printf("No se encontraron órdenes en el archivo.\n");
+        printf("No se encontraron ordenes en el archivo.\n");
         return 1;
     }
 
     // Cargar las órdenes del archivo
     CargaRegistros(argv[1], iOrders);
     if (aOrders == NULL) {
-        printf("Error al cargar las órdenes.\n");
+        printf("Error al cargar las ordenes.\n");
         return 1;
     }
 
-    printf("Se cargaron %d órdenes.\n", iOrders);
+    printf("Se cargaron %d ordenes.\n", iOrders);
     
     // Selección de categorías para demostrar datos
     char aux[4];
@@ -32,28 +32,28 @@ int main(int argc, char *argv[]) {
     char *mas_vendida = NULL;
     char *menos_vendida = NULL;
     while (1){
-        printf("¿Que datos quiere conocer?: \n");
+        printf("Que datos quiere conocer?: \n");
         scanf("%s", categorias);
         if (strcmp(categorias, "pms") == 0) {
             if (mas_vendida) free(mas_vendida); // Liberar memoria previa si existe
             mas_vendida = pizza_mas_vendida(iOrders, aOrders);
-            printf("Pizza más vendida: %s\n", mas_vendida);
+            printf("Pizza mas vendida: %s\n", mas_vendida);
         }
         else if (strcmp(categorias, "pls") == 0) {
             if (menos_vendida) free(menos_vendida);
             menos_vendida = pizza_menos_vendida(iOrders, aOrders);
-            printf("Pizza menos vendida: %s\n", menos_vendida);        
+            printf("Pizza menos vendida: %s\n", menos_vendida);
         }
         else if (strcmp(categorias, "dms") == 0) {
             float ventas_mas = 0; // Variable para almacenar el total de ventas
             char *fecha_mas = dia_mas_dinero(iOrders, aOrders, &ventas_mas);
-            printf("El día con más ventas fue: %s con un total de $%.2f\n", fecha_mas, ventas_mas);
+            printf("El dia con mas ventas fue: %s con un total de $%.2f\n", fecha_mas, ventas_mas);
             free(fecha_mas); // Liberar la memoria devuelta por strdup
         }
         else if (strcmp(categorias, "dls") == 0) {
             float ventas_menos = 0; // Variable para almacenar el total de ventas
             char *fecha_menos = dia_menos_dinero(iOrders, aOrders, &ventas_menos);
-            printf("El día con menos ventas fue: %s con un total de $%.2f\n", fecha_menos, ventas_menos);
+            printf("El dia con menos ventas fue: %s con un total de $%.2f\n", fecha_menos, ventas_menos);
             free(fecha_menos); // Liberar la memoria devuelta por strdup
         }
         else if (strcmp(categorias, "dmsp") == 0){
@@ -83,12 +83,15 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        // Limpiar el búfer de entrada para evitar problemas en la siguiente iteración
+        while (getchar() != '\n');
+    }
+
     // Liberar memorias asignadas
     free(sCabecera);
     free_orders(aOrders, iOrders); // Liberar la memoria de las ordenes
     if (mas_vendida) free(mas_vendida);
-    if (menos_vendida) free(menos_vendida);    
+    if (menos_vendida) free(menos_vendida);
 
     return 0;
     }
-}
