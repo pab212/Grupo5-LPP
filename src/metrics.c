@@ -1,19 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <float.h>
 #include "../include/metrics.h"
+#include "../include/csv_reader.h"
 
 #define MAX_PIZZAS 50
 
-//Evitar Errores
-
-void dia_mas_dinero() {
-    printf("Función dia_mas_dinero aún no implementada.\n");
-}
-
-void dia_menos_dinero() {
-    printf("Función dia_menos_dinero aún no implementada.\n");
-}
+//Evitar Errores (Temporal para poder correr el codigo)
 
 void dia_mas_pizza() {
     printf("Función dia_mas_pizza aún no implementada.\n");
@@ -76,6 +70,8 @@ char* pizza_mas_vendida(int size, Order *orders) {
     return strdup(pizzas[max_index].pizza_name_id); // Copia dinámica del string
 }
 
+
+
 char* pizza_menos_vendida(int size, Order *orders) {
     PizzaCount pizzas[MAX_PIZZAS] = {0}; 
     int pizza_count = 0;
@@ -104,4 +100,90 @@ char* pizza_menos_vendida(int size, Order *orders) {
     }
 
     return strdup(pizzas[min_index].pizza_name_id); // Copia dinámica del string
+}
+
+
+
+// Función para encontrar el día con más ventas en términos de dinero
+char* dia_mas_dinero(int size, Order *orders, float *total_ventas) {
+    float max_sales = 0.0f;
+    char max_day[20] = {0};
+
+    // Usamos un arreglo temporal para sumar ventas por fecha
+    float sales_by_day[MAX_PIZZAS] = {0};
+    char dates[MAX_PIZZAS][20];  // Array de fechas únicas
+
+    int date_count = 0;  // Para llevar el registro de cuántas fechas hemos encontrado
+
+    for (int i = 0; i < iOrders; i++) {
+        int found = 0;
+        for (int j = 0; j < date_count; j++) {
+            if (strcmp(dates[j], aOrders[i].order_date) == 0) {
+                sales_by_day[j] += aOrders[i].total_price;
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            // Si no encontramos la fecha, agregamos una nueva entrada para esta fecha
+            strcpy(dates[date_count], aOrders[i].order_date);
+            sales_by_day[date_count] = aOrders[i].total_price;
+            date_count++;
+        }
+    }
+
+    // Buscar la fecha con el máximo total de ventas
+    for (int i = 0; i < date_count; i++) {
+        if (sales_by_day[i] > max_sales) {
+            max_sales = sales_by_day[i];
+            strcpy(max_day, dates[i]);
+        }
+    }
+
+    *total_ventas = max_sales;  // Asignar el total de ventas
+
+    return strdup(max_day);  // Devolver la fecha con más ventas
+}
+
+// Función para encontrar el día con menos ventas en términos de dinero
+char* dia_menos_dinero(int size, Order *orders, float *total_ventas) {
+    float min_sales = FLT_MAX;
+    char min_day[20] = {0};
+
+    // Usamos un arreglo temporal para sumar ventas por fecha
+    float sales_by_day[MAX_PIZZAS] = {0};
+    char dates[MAX_PIZZAS][20];  // Array de fechas únicas
+
+    int date_count = 0;  // Para llevar el registro de cuántas fechas hemos encontrado
+
+    for (int i = 0; i < iOrders; i++) {
+        int found = 0;
+        for (int j = 0; j < date_count; j++) {
+            if (strcmp(dates[j], aOrders[i].order_date) == 0) {
+                sales_by_day[j] += aOrders[i].total_price;
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            // Si no encontramos la fecha, agregamos una nueva entrada para esta fecha
+            strcpy(dates[date_count], aOrders[i].order_date);
+            sales_by_day[date_count] = aOrders[i].total_price;
+            date_count++;
+        }
+    }
+
+    // Buscar la fecha con el mínimo total de ventas
+    for (int i = 0; i < date_count; i++) {
+        if (sales_by_day[i] < min_sales) {
+            min_sales = sales_by_day[i];
+            strcpy(min_day, dates[i]);
+        }
+    }
+
+    *total_ventas = min_sales;  // Asignar el total de ventas
+
+    return strdup(min_day);  // Devolver la fecha con menos ventas
 }

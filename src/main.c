@@ -44,12 +44,17 @@ int main(int argc, char *argv[]) {
             menos_vendida = pizza_menos_vendida(iOrders, aOrders);
             printf("Pizza menos vendida: %s\n", menos_vendida);        
         }
-        else if (strcmp(categorias, "dms") == 0){
-            dia_mas_dinero();
-        
+        else if (strcmp(categorias, "dms") == 0) {
+            float ventas_mas = 0; // Variable para almacenar el total de ventas
+            char *fecha_mas = dia_mas_dinero(iOrders, aOrders, &ventas_mas);
+            printf("El día con más ventas fue: %s con un total de $%.2f\n", fecha_mas, ventas_mas);
+            free(fecha_mas); // Liberar la memoria devuelta por strdup
         }
-        else if (strcmp(categorias, "dls") == 0){
-            dia_menos_dinero();
+        else if (strcmp(categorias, "dls") == 0) {
+            float ventas_menos = 0; // Variable para almacenar el total de ventas
+            char *fecha_menos = dia_menos_dinero(iOrders, aOrders, &ventas_menos);
+            printf("El día con menos ventas fue: %s con un total de $%.2f\n", fecha_menos, ventas_menos);
+            free(fecha_menos); // Liberar la memoria devuelta por strdup
         }
         else if (strcmp(categorias, "dmsp") == 0){
             dia_mas_pizza();
