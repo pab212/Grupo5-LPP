@@ -68,6 +68,16 @@ int main(int argc, char *argv[]) {
         }
         else if (strcmp(categorias, "hp") == 0){
             categoria_pizzas();
+            
+        }
+        else {
+            char respuesta[2];
+            printf("Se pidio una metrica que no existe, Desea continuar?: (S/N)\n ");
+            scanf(" %s",&respuesta);
+            if (strcmp(respuesta, "N") == 0 || strcmp(respuesta, "n") == 0) {
+                break;
+            }
+                 
         }
     }
 
