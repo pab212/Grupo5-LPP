@@ -8,15 +8,6 @@
 #define MAX_PIZZAS 50
 
 //Evitar Errores (Temporal para poder correr el codigo)
-
-void dia_mas_pizza() {
-    printf("Función dia_mas_pizza aún no implementada.\n");
-}
-
-void dia_menos_pizza() {
-    printf("Función dia_menos_pizza aún no implementada.\n");
-}
-
 void promedio_pizzas_orden() {
     printf("Función promedio_pizzas_orden aún no implementada.\n");
 }
@@ -39,6 +30,8 @@ typedef struct {
     char pizza_name[50];
     int total_sold;
 } PizzaCount;
+
+
 
 char* pizza_mas_vendida(int size, Order *orders) {
     PizzaCount pizzas[MAX_PIZZAS] = {0}; 
@@ -146,6 +139,8 @@ char* dia_mas_dinero(int size, Order *orders, float *total_ventas) {
     return strdup(max_day);  // Devolver la fecha con más ventas
 }
 
+
+
 // Función para encontrar el día con menos ventas en términos de dinero
 char* dia_menos_dinero(int size, Order *orders, float *total_ventas) {
     float min_sales = FLT_MAX;
@@ -186,4 +181,80 @@ char* dia_menos_dinero(int size, Order *orders, float *total_ventas) {
     *total_ventas = min_sales;  // Asignar el total de ventas
 
     return strdup(min_day);  // Devolver la fecha con menos ventas
+}
+
+
+
+// Función para encontrar el día con más ventas en términos de cantidad de pizzas vendidas
+char* dia_mas_pizzas_vendidas(int size, Order *orders, int *total_pizzas) {
+    int max_pizzas = 0;
+    char max_day[20] = {0};
+
+    int pizzas_by_day[MAX_PIZZAS] = {0};
+    char dates[MAX_PIZZAS][20];
+    int date_count = 0;
+
+    for (int i = 0; i < size; i++) {
+        int found = 0;
+        for (int j = 0; j < date_count; j++) {
+            if (strcmp(dates[j], orders[i].order_date) == 0) {
+                pizzas_by_day[j] += orders[i].quantity;
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            strcpy(dates[date_count], orders[i].order_date);
+            pizzas_by_day[date_count] = orders[i].quantity;
+            date_count++;
+        }
+    }
+
+    for (int i = 0; i < date_count; i++) {
+        if (pizzas_by_day[i] > max_pizzas) {
+            max_pizzas = pizzas_by_day[i];
+            strcpy(max_day, dates[i]);
+        }
+    }
+
+    *total_pizzas = max_pizzas;
+    return strdup(max_day);
+}
+
+
+
+// Función para encontrar el día con menos ventas en términos de cantidad de pizzas vendidas
+char* dia_menos_pizzas_vendidas(int size, Order *orders, int *total_pizzas) {
+    int min_pizzas = INT_MAX;
+    char min_day[20] = {0};
+
+    int pizzas_by_day[MAX_PIZZAS] = {0};
+    char dates[MAX_PIZZAS][20];
+    int date_count = 0;
+
+    for (int i = 0; i < size; i++) {
+        int found = 0;
+        for (int j = 0; j < date_count; j++) {
+            if (strcmp(dates[j], orders[i].order_date) == 0) {
+                pizzas_by_day[j] += orders[i].quantity;
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            strcpy(dates[date_count], orders[i].order_date);
+            pizzas_by_day[date_count] = orders[i].quantity;
+            date_count++;
+        }
+    }
+
+    for (int i = 0; i < date_count; i++) {
+        if (pizzas_by_day[i] < min_pizzas) {
+            min_pizzas = pizzas_by_day[i];
+            strcpy(min_day, dates[i]);
+        }
+    }
+
+    *total_pizzas = min_pizzas;
+    return strdup(min_day);
 }

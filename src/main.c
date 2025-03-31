@@ -56,11 +56,17 @@ int main(int argc, char *argv[]) {
             printf("El dia con menos ventas fue: %s con un total de $%.2f\n", fecha_menos, ventas_menos);
             free(fecha_menos); // Liberar la memoria devuelta por strdup
         }
-        else if (strcmp(categorias, "dmsp") == 0){
-            dia_mas_pizza();
+        if (strcmp(categorias, "dmsp") == 0) {
+            int total_pizzas_mas;
+            char* fecha_mas = dia_mas_pizzas_vendidas(iOrders, aOrders, &total_pizzas_mas);
+            printf("El día con más pizzas vendidas fue: %s con %d pizzas.\n", fecha_mas, total_pizzas_mas);
+            free(fecha_mas); // Liberar memoria de la fecha
         }
-        else if (strcmp(categorias, "dlsp") == 0){
-            dia_menos_pizza();
+        else if (strcmp(categorias, "dlsp") == 0) {
+            int total_pizzas_menos;
+            char* fecha_menos = dia_menos_pizzas_vendidas(iOrders, aOrders, &total_pizzas_menos);
+            printf("El día con menos pizzas vendidas fue: %s con %d pizzas.\n", fecha_menos, total_pizzas_menos);
+            free(fecha_menos); // Liberar memoria de la fecha
         }
         else if (strcmp(categorias, "apo") == 0){
             promedio_pizzas_orden();
