@@ -8,13 +8,6 @@
 #define MAX_PIZZAS 50
 
 //Evitar Errores (Temporal para poder correr el codigo)
-void promedio_pizzas_orden() {
-    printf("Función promedio_pizzas_orden aún no implementada.\n");
-}
-
-void promedio_pizzas_dia() {
-    printf("Función promedio_pizzas_dia aún no implementada.\n");
-}
 
 void ingrediente_mas_vendido() {
     printf("Función ingrediente_mas_vendido aún no implementada.\n");
@@ -257,4 +250,62 @@ char* dia_menos_pizzas_vendidas(int size, Order *orders, int *total_pizzas) {
 
     *total_pizzas = min_pizzas;
     return strdup(min_day);
+}
+
+
+
+//Funcion que determina el promedio de pizzas por orden
+float promedio_pizzas_orden(int size, Order *orders) {
+    int total_pizzas = 0;
+
+    // Sumar todas las cantidades de pizzas
+    for (int i = 0; i < size; i++) {
+        total_pizzas += orders[i].quantity;
+    }
+
+    // Calcular el promedio
+    return (float)total_pizzas / size;
+}
+
+
+
+// Función para calcular el promedio de pizzas vendidas por día
+float promedio_pizzas_dia(int size, Order *orders) {
+    int total_pizzas = 0;
+    int total_dias = 0;
+
+    // Usamos un arreglo temporal para contar las pizzas vendidas por cada fecha
+    int pizzas_by_day[MAX_PIZZAS] = {0};
+    char dates[MAX_PIZZAS][20];  // Array de fechas únicas
+
+    int date_count = 0;  // Para llevar el registro de cuántas fechas hemos encontrado
+
+    // Sumar las pizzas vendidas por cada fecha
+    for (int i = 0; i < size; i++) {
+        int found = 0;
+        for (int j = 0; j < date_count; j++) {
+            if (strcmp(dates[j], orders[i].order_date) == 0) {
+                pizzas_by_day[j] += orders[i].quantity;
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            // Si no encontramos la fecha, agregamos una nueva entrada para esta fecha
+            strcpy(dates[date_count], orders[i].order_date);
+            pizzas_by_day[date_count] = orders[i].quantity;
+            date_count++;
+        }
+    }
+
+    // Sumar todas las pizzas vendidas por los días
+    for (int i = 0; i < date_count; i++) {
+        total_pizzas += pizzas_by_day[i];
+    }
+
+    total_dias = date_count; // La cantidad de días únicos
+
+    // Retornar el promedio de pizzas vendidas por día
+    return (float)total_pizzas / total_dias;
 }

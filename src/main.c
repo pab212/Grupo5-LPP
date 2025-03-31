@@ -37,12 +37,12 @@ int main(int argc, char *argv[]) {
         if (strcmp(categorias, "pms") == 0) {
             if (mas_vendida) free(mas_vendida); // Liberar memoria previa si existe
             mas_vendida = pizza_mas_vendida(iOrders, aOrders);
-            printf("Pizza mas vendida: %s\n", mas_vendida);
+            printf("La pizza mas vendida fue: %s\n", mas_vendida);
         }
         else if (strcmp(categorias, "pls") == 0) {
             if (menos_vendida) free(menos_vendida);
             menos_vendida = pizza_menos_vendida(iOrders, aOrders);
-            printf("Pizza menos vendida: %s\n", menos_vendida);
+            printf("La pizza menos vendida fue: %s\n", menos_vendida);
         }
         else if (strcmp(categorias, "dms") == 0) {
             float ventas_mas = 0; // Variable para almacenar el total de ventas
@@ -59,21 +59,23 @@ int main(int argc, char *argv[]) {
         if (strcmp(categorias, "dmsp") == 0) {
             int total_pizzas_mas;
             char* fecha_mas = dia_mas_pizzas_vendidas(iOrders, aOrders, &total_pizzas_mas);
-            printf("El día con más pizzas vendidas fue: %s con %d pizzas.\n", fecha_mas, total_pizzas_mas);
+            printf("El día con más pizzas vendidas fue: %s con %d pizzas vendidas.\n", fecha_mas, total_pizzas_mas);
             free(fecha_mas); // Liberar memoria de la fecha
         }
         else if (strcmp(categorias, "dlsp") == 0) {
             int total_pizzas_menos;
             char* fecha_menos = dia_menos_pizzas_vendidas(iOrders, aOrders, &total_pizzas_menos);
-            printf("El día con menos pizzas vendidas fue: %s con %d pizzas.\n", fecha_menos, total_pizzas_menos);
+            printf("El día con menos pizzas vendidas fue: %s con %d pizzas vendidas.\n", fecha_menos, total_pizzas_menos);
             free(fecha_menos); // Liberar memoria de la fecha
         }
-        else if (strcmp(categorias, "apo") == 0){
-            promedio_pizzas_orden();
+        else if (strcmp(categorias, "apo") == 0) {
+            float promedio = promedio_pizzas_orden(iOrders, aOrders);
+            printf("El promedio de pizzas por orden es: %.2f\n", promedio);
         }
-        else if (strcmp(categorias, "apd") == 0){
-            promedio_pizzas_dia();
-        }
+        else if (strcmp(categorias, "apd") == 0) {
+            float promedio = promedio_pizzas_dia(iOrders, aOrders);
+            printf("El promedio de pizzas vendidas por día es: %.2f\n", promedio);
+        }        
         else if (strcmp(categorias, "ims") == 0){
             ingrediente_mas_vendido();
         }
