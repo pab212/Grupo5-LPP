@@ -5,6 +5,42 @@
 
 #define MAX_PIZZAS 50
 
+//Evitar Errores
+
+void dia_mas_dinero() {
+    printf("Función dia_mas_dinero aún no implementada.\n");
+}
+
+void dia_menos_dinero() {
+    printf("Función dia_menos_dinero aún no implementada.\n");
+}
+
+void dia_mas_pizza() {
+    printf("Función dia_mas_pizza aún no implementada.\n");
+}
+
+void dia_menos_pizza() {
+    printf("Función dia_menos_pizza aún no implementada.\n");
+}
+
+void promedio_pizzas_orden() {
+    printf("Función promedio_pizzas_orden aún no implementada.\n");
+}
+
+void promedio_pizzas_dia() {
+    printf("Función promedio_pizzas_dia aún no implementada.\n");
+}
+
+void ingrediente_mas_vendido() {
+    printf("Función ingrediente_mas_vendido aún no implementada.\n");
+}
+
+void categoria_pizzas() {
+    printf("Función categoria_pizzas aún no implementada.\n");
+}
+
+
+
 typedef struct {
     char pizza_name_id[50];
     int total_sold;

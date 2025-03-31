@@ -24,6 +24,7 @@ int CuentaRegistros(const char *filename) {
     }
     fclose(file);
     iOrders--;  // Restar 1 para no contar los encabezados
+    free(sRegistro);
     return iOrders;
 }
 
@@ -124,16 +125,6 @@ void MuestraDatos() {
 // Función para liberar memoria de las órdenes
 void free_orders(Order *orders, int size) {
     // Liberar las cadenas dentro de cada order
-    for (int i = 0; i < size; i++) {
-        free(orders[i].pizza_name_id);
-        free(orders[i].order_date);
-        free(orders[i].order_time);
-        free(orders[i].pizza_size);
-        free(orders[i].pizza_category);
-        free(orders[i].pizza_ingredients);
-        free(orders[i].pizza_name);
-    }
-
-    // Finalmente liberar el arreglo de órdenes
     free(orders);
+
 }

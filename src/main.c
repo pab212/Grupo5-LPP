@@ -28,18 +28,21 @@ int main(int argc, char *argv[]) {
     
     // Selección de categorías para demostrar datos
     char aux[4];
-    char *categorias; 
-    categorias = aux;
+    char categorias[4];
+    char *mas_vendida = NULL;
+    char *menos_vendida = NULL;
     while (1){
         printf("¿Que datos quiere conocer?: \n");
         scanf("%s", categorias);
-        if (strcmp(categorias, "pms") == 0){
-            char *mas_vendida = pizza_mas_vendida(iOrders, aOrders);
+        if (strcmp(categorias, "pms") == 0) {
+            if (mas_vendida) free(mas_vendida); // Liberar memoria previa si existe
+            mas_vendida = pizza_mas_vendida(iOrders, aOrders);
             printf("Pizza más vendida: %s\n", mas_vendida);
-            }
-        else if (strcmp(categorias, "pls") == 0){
-            char *menos_vendida = pizza_menos_vendida(iOrders, aOrders);
-            printf("Pizza menos vendida: %s\n", menos_vendida);
+        }
+        else if (strcmp(categorias, "pls") == 0) {
+            if (menos_vendida) free(menos_vendida);
+            menos_vendida = pizza_menos_vendida(iOrders, aOrders);
+            printf("Pizza menos vendida: %s\n", menos_vendida);        
         }
         else if (strcmp(categorias, "dms") == 0){
             dia_mas_dinero();
@@ -69,10 +72,10 @@ int main(int argc, char *argv[]) {
     }
 
     // Liberar memorias asignadas
+    free(sCabecera);
     free_orders(aOrders, iOrders); // Liberar la memoria de las ordenes
-    free(mas_vendida);   // Liberar la memoria de la pizza más vendida
-    free(menos_vendida); // Liberar la memoria de la pizza menos vendida
-    free(aux); // Liberar la memoria de la variable auxiliar en donde se almacena la categoría seleccionada
+    if (mas_vendida) free(mas_vendida);
+    if (menos_vendida) free(menos_vendida);    
 
     return 0;
 }
