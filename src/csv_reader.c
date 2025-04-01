@@ -18,6 +18,8 @@ int CuentaRegistros(const char *filename) {
     struct stat stStatusFile;
     stat(filename, &stStatusFile);
     char *sRegistro = malloc(stStatusFile.st_size);
+
+
     
     while (fscanf(file, "%[^\n] ", sRegistro) != EOF) {
         iOrders++;
@@ -103,7 +105,7 @@ void CargaRegistros(const char *filename, int iOrders) {
 //
 // Muestra los datos cargados
 //
-void MuestraDatos() {
+void MuestraDatos() { 
     printf("Reg. 0: cabecera: %s\n", sCabecera);
     for (int iPosRegistro = 0; iPosRegistro < iOrders; iPosRegistro++) {
         printf("Reg. %i: %d | %d | %s | %d | %s | %s | %.2f | %.2f | %s | %s | %s | %s\n", 
