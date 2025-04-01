@@ -25,7 +25,7 @@ typedef struct {
 } PizzaCount;
 
 
-
+//funcion que trabaja con la variable pizza mas vendida
 char* pizza_mas_vendida(int size, Order *orders) {
     PizzaCount pizzas[MAX_PIZZAS] = {0}; 
     int pizza_count = 0;
@@ -57,7 +57,7 @@ char* pizza_mas_vendida(int size, Order *orders) {
 }
 
 
-
+//funcion que trabaja con la variable pizza menos vendida
 char* pizza_menos_vendida(int size, Order *orders) {
     PizzaCount pizzas[MAX_PIZZAS] = {0}; 
     int pizza_count = 0;
