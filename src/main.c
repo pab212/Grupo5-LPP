@@ -4,6 +4,7 @@
 #include "../include/metrics.h"
 #include <string.h>
 
+// 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         printf("Uso: %s <ventas_pizzas.csv>\n", argv[0]);
@@ -31,6 +32,8 @@ int main(int argc, char *argv[]) {
     char categorias[4];
     char *mas_vendida = NULL;
     char *menos_vendida = NULL;
+
+    //ciclo While con una condicion que siempre se cumple para asegurar su funcionamiento 
     while (1){
         printf("Que datos quiere conocer?: \n");
         scanf("%s", categorias);
